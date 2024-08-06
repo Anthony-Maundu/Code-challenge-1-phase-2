@@ -25,10 +25,25 @@ function AccountContainer() {
   useEffect(() => {
     getTransactions();
   }, []);
+
+  const handlePostNewTransaction = async (e, formData) => {
+    e.preventDefault();
+    const response = await fetch("http://localhost:8001/transactions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...formData, amount: parseInt(formData.amount) }),
+    });
+    if (!response.ok) {
+      alert("Failed to add a new transaction! retry");
+    } else {
+      getTransactions();
+    }
+  };
+
   return (
     <div>
       <Search />
-      <AddTransactionForm />
+      <AddTransactionForm handlePostNewTransaction={handlePostNewTransaction} />
       <TransactionsList loading={loading} transactions={transactions} />
     </div>
   );
