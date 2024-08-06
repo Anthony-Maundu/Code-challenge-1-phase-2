@@ -6,6 +6,8 @@ import AddTransactionForm from "./AddTransactionForm";
 function AccountContainer() {
   const [loading, setLoading] = useState(false);
   const [transactions, setTransactions] = useState([]);
+  const [filteredTransactions, setFilteredTransaction] = useState([]);
+  const [search, setSearch] = useState("");
 
   const getTransactions = async () => {
     try {
@@ -40,11 +42,23 @@ function AccountContainer() {
     }
   };
 
+  useEffect(() => {
+    if (search !== "") {
+      setFilteredTransaction(
+        transactions.filter((transaction) =>
+          transaction.description.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    } else {
+      setFilteredTransaction(transactions);
+    }
+  }, [transactions, search]);
+
   return (
     <div>
-      <Search />
+      <Search search={search} setSearch={setSearch} />
       <AddTransactionForm handlePostNewTransaction={handlePostNewTransaction} />
-      <TransactionsList loading={loading} transactions={transactions} />
+      <TransactionsList loading={loading} transactions={filteredTransactions} />
     </div>
   );
 }
