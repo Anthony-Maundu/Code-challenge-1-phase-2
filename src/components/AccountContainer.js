@@ -28,7 +28,7 @@ function AccountContainer() {
     getTransactions();
   }, []);
 
-  const handlePostNewTransaction = async (e, formData) => {
+  const newTransaction = async (e, formData) => {
     e.preventDefault();
     const response = await fetch("http://localhost:8001/transactions", {
       method: "POST",
@@ -57,7 +57,7 @@ function AccountContainer() {
   return (
     <div>
       <Search search={search} setSearch={setSearch} />
-      <AddTransactionForm handlePostNewTransaction={handlePostNewTransaction} />
+      <AddTransactionForm handlePostNewTransaction={newTransaction} />
       <TransactionsList loading={loading} transactions={filteredTransactions} />
     </div>
   );
